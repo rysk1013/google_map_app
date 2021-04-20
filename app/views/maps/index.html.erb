@@ -2,6 +2,7 @@
 
 <input id="address" type="text-box">
 <input type="button" value="Encode" onclick="codeAddress()">
+<div id="display">検索した緯度・経度が表示されます</div>
 
 <div id="map"></div>
 
@@ -14,6 +15,8 @@
 
 <script>
   let map
+  let geocoder
+  const display = document.getElementById('display');
 
   function initMap() {
     geocoder = new google.maps.Geocoder()
@@ -29,8 +32,6 @@
     });
   }
 
-  let geocoder
-
   function codeAddress() {
     let inputAddress = document.getElementById('address').value;
     geocoder.geocode({'address': inputAddress}, function(results, status) {
@@ -40,6 +41,7 @@
             map: map,
             position: results[0].geometry.location
         });
+        display.textContent = "検索結果:" + results[0].geometry.location;
       } else {
         alert('該当する結果がありませんでした:' + status);
       }
